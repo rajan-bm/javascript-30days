@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Clock</title>
+
+    <style>
+      html {
+        background: #282c34
+          url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+        background-size: cover;
+        font-family: "Arial", sans-serif;
+        text-align: center;
+        font-size: 10px;
+      }
+      body {
+        font-size: 2rem;
+        display: flex;
+        flex: 1;
+        min-height: 100vh;
+        align-items: center;
+      }
+      .clock {
+        width: 30rem;
+        height: 30rem;
+        border: 20px solid #61dafb;
+        border-radius: 50%;
+        margin: 50px auto;
+        padding: 2rem;
+        box-shadow: 0 0 0px 4px rgba(0, 0, 0, 0.1), inset 0 0 3px #282c34,
+          inset 0 0 10px #61dafb, inset 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      .clock-face {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform: translateY(3px);
+      }
+      .hand {
+        width: 50%;
+        height: 6px;
+        background: #61dafb;
+        position: absolute;
+        top: 50%;
+        transform-origin: 100%;
+        transform: rotate(90deg);
+        transition: all 0.05s cubic-bezier(0.1, 2.5, 0.58, 1);
+      }
+      .hour-mark {
+        position: absolute;
+        width: 4px;
+        height: 20px;
+        background: #444;
+        top: 0;
+        left: 50%;
+        transform-origin: bottom center;
+        transform: rotate(calc(var(--i) * 30deg)) translateY(-10px);
+        transition: background 0.2s;
+      }
+
+      .hour-mark.active {
+        background: #ff0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand minute-hand"></div>
+        <div class="hand second-hand"></div>
+        <!-- Add this inside .clock-face -->
+        <div class="hour-mark" style="--i: 1"></div>
+        <div class="hour-mark" style="--i: 2"></div>
+        <div class="hour-mark" style="--i: 3"></div>
+        <div class="hour-mark" style="--i: 4"></div>
+        <div class="hour-mark" style="--i: 5"></div>
+        <div class="hour-mark" style="--i: 6"></div>
+        <div class="hour-mark" style="--i: 7"></div>
+        <div class="hour-mark" style="--i: 8"></div>
+        <div class="hour-mark" style="--i: 9"></div>
+        <div class="hour-mark" style="--i: 10"></div>
+        <div class="hour-mark" style="--i: 11"></div>
+        <div class="hour-mark" style="--i: 12"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const secondHand = document.querySelector(".second-hand");
+    const minuteHand = document.querySelector(".minute-hand");
+    const hourHand = document.querySelector(".hour-hand");
+    const hourMarks = document.querySelectorAll(".hour-mark");
+    function setDate() {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours();
+
+      const secondsDegrees = (seconds / 60) * 360 + 90;
+      const minutesDegrees = (minutes / 60) * 360 + 90;
+      const hoursDegrees = (hours / 12) * 360 + (minutes / 60) * 30 + 90;
+
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+      if (secondsDegrees === 90) {
+        secondHand.style.transition = "none";
+      } else {
+        secondHand.style.transition =
+          "all 0.05s cubic-bezier(0.1, 2.5, 0.58, 1)";
+      }
+
+      // Highlight the current hour mark
+      if (seconds % 5 === 0) {
+        const hourMarksIndex = seconds / 5;
+        hourMarks.forEach((mark, index) => {
+          mark.classList.toggle("active", index === hourMarksIndex);
+        });
+      } else {
+        hourMarks.forEach((mark) => {
+          mark.classList.remove("active");
+        });
+      }
+    }
+    setInterval(setDate, 1000);
+  </script>
+</html>
