@@ -104,12 +104,9 @@
         '.inbox input[type="checkbox"]'
       );
       console.log(checkboxes);
-
       let lastChecked;
-
       function handleCheck(e) {
         console.log(e);
-
         let inBetween = false;
         //check if they had the shift key down
         // AND check that they are checking it
@@ -127,10 +124,8 @@
             }
           });
         }
-
         lastChecked = this;
       }
-
       checkboxes.forEach((checkbox) => {
         checkbox.addEventListener("click", handleCheck);
       });
